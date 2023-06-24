@@ -1,0 +1,370 @@
+2<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,300&family=Nunito:wght@400;500;600;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: black;
+        font-family: "Lato", sans-serif;
+      }
+      .container {
+        padding: 16px;
+        gap: 16px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-rows: 10px 45px 3fr;
+        grid-template-areas:
+          "password"
+          "result"
+          "action";
+      }
+
+      .grid_item {
+      }
+
+      .title {
+        grid-area: password;
+        color: gray;
+        display: flex;
+        justify-content: center;
+      }
+
+      .result {
+        grid-area: result;
+        background-color: #242329;
+        color: lightyellow;
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        align-items: center;
+        padding: 0 8px;
+      }
+
+      .action_result {
+        color: #a4ffaf;
+      }
+
+      .action_area {
+        grid-area: action;
+        background-color: #242329;
+        padding: 8px;
+      }
+
+      .action_title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: lightyellow;
+        padding: 8px 0;
+      }
+
+      input[type="checkbox"] {
+        accent-color: #a4ffaf;
+      }
+
+      .strength {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+      }
+
+      .strength,
+      .strength_title {
+        color: gray;
+        font-size: 12px;
+      }
+
+      .password_level {
+        padding: 3px;
+        background: transparent;
+        border: 1px solid lightyellow;
+        height: 10px;
+      }
+
+      .password_level_container {
+        display: flex;
+        gap: 4px;
+      }
+
+      .password_level_name {
+        padding-right: 6px;
+        font-size: 16px;
+        color: lightyellow;
+      }
+
+      .check_boxs {
+        color: lightyellow;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 12px;
+      }
+      .check_boxs div {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .range_input {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 5px;
+        background: #000;
+        outline: none;
+        border: 1px solid #a4ffaf;
+        border-radius: 8px;
+      }
+
+      .range_input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 2px;
+        height: 6px;
+        background: #a4ffaf;
+        cursor: pointer;
+        border: 5px solid #a4ffaf;
+        border-radius: 4px;
+      }
+
+      .range_input::-moz-range-thumb {
+        width: 20px;
+        height: 60px;
+        background: #a4ffaf;
+        cursor: pointer;
+        border: 5px solid #a4ffaf;
+        border-radius: 4px;
+      }
+
+      .active {
+        background: #a4ffaf;
+      }
+
+      .copy_button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: 300ms all;
+      }
+
+      .copy_button:hover {
+        background-color: gray;
+        border-radius: 4px;
+      }
+
+      .generate_btn {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: 300ms all;
+      }
+
+      .generate_btn:hover {
+        background: #a4ffaf;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="title grid_item">Password generator</div>
+        <div class="result grid_item">
+          <span class="generate_result"></span>
+          <button class="copy_button">
+            <img width="24" src="./assets/copy-icon.svg" />
+          </button>
+        </div>
+        <div class="action_area grid_item">
+          <div class="action_title">
+            <span>Character length</span> <span class="action_result">0</span>
+          </div>
+          <div class="range">
+            <input
+              class="range_input"
+              type="range"
+              min="0"
+              max="15"
+              value="0"
+            />
+          </div>
+
+          <div class="check_boxs">
+            <div>
+              <input id="upercase" type="checkbox" />
+              <label for="upercase">Include Uppercase Letters</label>
+            </div>
+            <div>
+              <input id="lowercase" type="checkbox" />
+              <label for="lowercase">Include Lowercase Letters</label>
+            </div>
+            <div>
+              <input id="numbers" type="checkbox" />
+              <label for="numbers">Include Numbers</label>
+            </div>
+            <div>
+              <input id="symbols" type="checkbox" />
+              <label for="symbols">Include Symbols</label>
+            </div>
+            <div class="strength">
+              <span class="strength_title">STRENGTH</span>
+              <div class="password_level_container">
+                <span class="password_level_name"></span>
+                <span class="password_level easy"></span>
+                <span class="password_level normal"></span>
+                <span class="password_level medium"></span>
+                <span class="password_level high"></span>
+              </div>
+            </div>
+            <div class="generate">
+              <button class="generate_btn">Generate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const rangeInput = document.querySelector(".range_input");
+      const actionResult = document.querySelector(".action_result");
+      const checkboxInputs = document.querySelectorAll(
+        'input[type="checkbox"]'
+      );
+      const btn = document.querySelector(".generate_btn");
+      const levelName = document.querySelector(".password_level_name");
+      const resultGenerate = document.querySelector(".generate_result");
+      const levelBackground = document.querySelectorAll(".password_level");
+      const copyBtn = document.querySelector(".copy_button");
+
+      let caseArr = [];
+      let characterCount = 0;
+      let copiedPassword = "";
+
+      btn.addEventListener("click", () => {
+        generatePassword();
+      });
+
+      copyBtn.addEventListener("click", function () {
+        copyPassword();
+      });
+
+      rangeInput.addEventListener("input", function () {
+        characterCount = this.value;
+        actionResult.innerText = characterCount;
+      });
+
+      const resetBackgroundStyle = () => {
+        levelBackground.forEach((value) => {
+          value.style.background = "";
+        });
+      };
+
+      const changedPasswordLevel = (arr) => {
+        let lvl = "";
+        switch (arr.length) {
+          case 0:
+            lvl = "EASY";
+            break;
+
+          case 1:
+            lvl = "EASY";
+            break;
+
+          case 2:
+            lvl = "NORMAL";
+            break;
+
+          case 3:
+            lvl = "MEDIUM";
+            break;
+
+          case 4:
+            lvl = "HIGH";
+            break;
+
+          default:
+            break;
+        }
+
+        return (levelName.innerText = lvl);
+      };
+
+      checkboxInputs.forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          if (this.checked) {
+            caseArr.push(this.id);
+            changedPasswordLevel(caseArr);
+            changeBackgroundLevel(caseArr);
+          } else {
+            caseArr = caseArr.filter((c) => c !== this.id);
+            changedPasswordLevel(caseArr);
+            changeBackgroundLevel(caseArr);
+          }
+        });
+      });
+
+      const changeBackgroundLevel = (caseArr) => {
+        levelBackground.forEach(function (box, boxIndex) {
+          if (boxIndex < caseArr.length) {
+            box.classList.add("active");
+          } else {
+            box.classList.remove("active");
+          }
+        });
+      };
+
+      const generatePassword = () => {
+        let characters = "";
+        let password = "";
+
+        if (caseArr.includes("upercase")) {
+          characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+
+        if (caseArr.includes("lowercase")) {
+          characters += "abcdefghijklmnopqrstuvwxyz";
+        }
+
+        if (caseArr.includes("numbers")) {
+          characters += "0123456789";
+        }
+
+        if (caseArr.includes("symbols")) {
+          characters += "!@#$%^&*()";
+        }
+
+        if (characters === "") {
+          return (resultGenerate.innerText = "Invalid password");
+        }
+
+        for (let i = 0; i < characterCount; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          password += characters.charAt(randomIndex);
+        }
+
+        copiedPassword = password;
+        resultGenerate.innerText = password;
+      };
+
+      const copyPassword = () => {
+        navigator.clipboard.writeText(copiedPassword);
+      };
+    </script>
+  </body>
+</html>
